@@ -1,70 +1,167 @@
-Project Proposal
-1. Project Title
-2. Minal Daryn
+# Sign Language Recognition Dataset Guide
 
-IMDB Sentiment Analysis with LSTM
+## Overview
 
-2. Problem Statement
+This directory contains the dataset used for the **Sign Language Recognition using Deep Learning** project.
 
-In this project, I will develop a deep learning model that can classify IMDB movie reviews as positive or negative.
+The goal of this project is to build an AI model that can recognize hand gestures representing letters from sign language. This project has social importance because sign language recognition can support accessibility and help communication between hearing and non-hearing people.
 
-This task is important because people write thousands of reviews online every day, and it is not always possible to analyze them manually. Sentiment analysis helps to automatically understand the general opinion of users based on their text.
+The task is an **image classification** problem.
 
-The main goal of the project is to train a model that can read a movie review and predict its sentiment correctly.
+---
 
-3. Dataset
+## Dataset Source
 
-I will use the IMDB Movie Reviews Dataset. This dataset contains movie reviews with sentiment labels.
+**Dataset Name:** Sign Language MNIST  
+**Source:** Kaggle  
+**Dataset Link:** https://www.kaggle.com/datasets/datamunge/sign-language-mnist  
+**Task Type:** Image Classification  
+**Image Type:** Grayscale hand gesture images  
+**Image Size:** 28 × 28 pixels  
+**Format:** CSV files  
 
-Each sample includes:
+---
 
-the text of the review
-the sentiment label: positive or negative
+## Dataset Description
 
-The dataset is suitable for this project because it is commonly used for text classification and sentiment analysis tasks.
+The dataset contains images of hand gestures representing letters from the American Sign Language alphabet.
 
-4. Planned Method
+Each image is stored as pixel values in CSV format.  
+Every row represents one image.
 
-At the beginning, I will create a simple baseline model using TF-IDF and Logistic Regression. This model will help me understand the basic performance level.
+Each image has:
 
-After that, I will build a deep learning model using LSTM. LSTM is useful for text data because it can work with sequences and remember important information from previous words.
+- 784 pixel values;
+- 1 label column;
+- 28 × 28 grayscale structure.
 
-The general workflow will be:
+The label represents the letter shown by the hand gesture.
 
-Load the dataset
-Clean and preprocess the text
-Convert words into numerical format
-Train a baseline model
-Train an LSTM model
-Compare the results
-5. Evaluation
+---
 
-To evaluate the models, I will use:
+## Files
 
-Accuracy
-Precision
-Recall
-F1-score
-Confusion matrix
+Usually, the dataset contains two main files:
 
-These metrics will help me understand not only how many predictions are correct, but also how well the model works with both positive and negative reviews.
+```text
+sign_mnist_train.csv
+sign_mnist_test.csv
+```
 
-6. Expected Challenges
+| File | Description |
+|---|---|
+| sign_mnist_train.csv | Training dataset |
+| sign_mnist_test.csv | Testing dataset |
 
-One possible challenge is text preprocessing, because movie reviews can contain long sentences, punctuation, HTML tags, and informal language.
+---
 
-Another challenge is overfitting. The LSTM model may perform well on training data but worse on unseen reviews. To reduce this problem, I may use dropout, validation data, and early stopping.
+## Data Structure
 
-Also, I may need to test different parameters such as vocabulary size, maximum sequence length, batch size, and number of epochs.
+Each row contains:
 
-7. Weekly Plan
-Week	Plan
-Week 1	Choose the topic, prepare the proposal, create GitHub repository, load the dataset
-Week 2	Explore the dataset, clean the text, prepare preprocessing, train baseline model
-Week 3	Build and train the LSTM model, tune parameters, compare with baseline
-Week 4	Evaluate final results, create visualizations, write final report and prepare presentation
-8. Expected Result
+| Column | Description |
+|---|---|
+| label | Class label of the hand gesture |
+| pixel1 - pixel784 | Pixel values of the 28×28 image |
 
-By the end of the project, I expect to have a working sentiment classification model that can predict whether a movie review is positive or negative.
+Example:
 
-I also expect to compare a traditional machine learning model with a deep learning model and explain which approach works better for this dataset.
+```text
+label, pixel1, pixel2, pixel3, ..., pixel784
+```
+
+---
+
+## Image Information
+
+| Feature | Value |
+|---|---|
+| Image size | 28 × 28 |
+| Color mode | Grayscale |
+| Pixel range | 0–255 |
+| Input shape for CNN | 28 × 28 × 1 |
+
+---
+
+## Project Task
+
+The model receives a hand gesture image as input and predicts the corresponding sign language class.
+
+Input:
+
+```text
+Hand gesture image
+```
+
+Output:
+
+```text
+Predicted sign language letter
+```
+
+---
+
+## Why This Dataset Was Chosen
+
+I chose this dataset because:
+
+- it is suitable for deep learning;
+- it is not too heavy for Google Colab or a laptop;
+- it is good for CNN models;
+- it has social importance;
+- it can be used to build a simple digital assistant;
+- it supports image preprocessing and augmentation;
+- it is suitable for a Streamlit demo application.
+
+---
+
+## Planned Workflow
+
+The project workflow:
+
+```text
+Dataset loading
+      ↓
+Exploratory Data Analysis
+      ↓
+Image preprocessing
+      ↓
+Data augmentation
+      ↓
+CNN model training
+      ↓
+Model evaluation
+      ↓
+Streamlit app demo
+```
+
+---
+
+## Directory Structure
+
+```text
+data/
+├── README.md
+├── sign_mnist_train.csv
+└── sign_mnist_test.csv
+```
+
+
+---
+
+## Next Steps
+
+After downloading the dataset:
+
+1. Load train and test CSV files.
+2. Check class distribution.
+3. Visualize sample hand gesture images.
+4. Normalize pixel values.
+5. Reshape images for CNN.
+6. Apply data augmentation.
+7. Train CNN model.
+8. Evaluate model performance.
+9. Build Streamlit demo app.
+
+---
+
