@@ -1,167 +1,246 @@
-# Sign Language Recognition Dataset Guide
+# ✋ Sign Language Recognition Using Deep Learning
 
-## Overview
+## Project Overview
 
-This directory contains the dataset used for the **Sign Language Recognition using Deep Learning** project.
+This project focuses on building an artificial intelligence system that can recognize hand gestures from American Sign Language (ASL) using deep learning techniques.
 
-The goal of this project is to build an AI model that can recognize hand gestures representing letters from sign language. This project has social importance because sign language recognition can support accessibility and help communication between hearing and non-hearing people.
+The main idea of the project is to train a computer vision model that can analyze hand gesture images and predict the correct sign language letter.
 
-The task is an **image classification** problem.
+This project belongs to the field of:
+
+- Deep Learning
+- Computer Vision
+- Artificial Intelligence
+- Accessibility Technologies
+
+The project also has social importance because sign language recognition systems can help improve communication accessibility for people who use sign language in everyday life.
 
 ---
 
-## Dataset Source
+# 🎯 Project Goal
 
-**Dataset Name:** Sign Language MNIST  
+The main goal of this project is to develop a deep learning model capable of recognizing American Sign Language hand gestures from images with high accuracy.
+
+The system should be able to:
+
+- analyze hand gesture images;
+- classify sign language letters;
+- predict the correct class;
+- work as a simple digital assistant prototype.
+
+---
+
+# 📌 Project Objectives
+
+The main objectives of the project are:
+
+1. Explore and understand the ASL dataset.
+2. Visualize and analyze hand gesture images.
+3. Prepare images for deep learning training.
+4. Apply preprocessing and data augmentation.
+5. Build and train a CNN model.
+6. Evaluate model performance using different metrics.
+7. Analyze model errors and limitations.
+8. Create a Streamlit demo application.
+9. Demonstrate practical use of AI in accessibility tasks.
+
+---
+
+# 🧠 Why This Topic Was Chosen
+
+I chose this topic because it combines:
+
+- artificial intelligence;
+- image recognition;
+- deep learning;
+- social impact.
+
+Compared to a simple text classification project, sign language recognition is more visual, interactive, and practical.
+
+This topic also allows me to learn important computer vision concepts such as:
+
+- image preprocessing;
+- convolutional neural networks (CNN);
+- data augmentation;
+- image classification;
+- model deployment.
+
+In addition, the project can later be expanded into a real-time gesture recognition system using a webcam.
+
+---
+
+# 🌍 Real-World Importance
+
+Sign language recognition systems can potentially help:
+
+- improve accessibility;
+- support communication;
+- assist educational tools;
+- create AI-based helper systems.
+
+This type of technology is actively studied in modern artificial intelligence research.
+
+---
+
+# 📂 Dataset Information
+
+For this project, I selected the **ASL Alphabet Dataset** from Kaggle.
+
+**Dataset Name:** ASL Alphabet  
 **Source:** Kaggle  
-**Dataset Link:** https://www.kaggle.com/datasets/datamunge/sign-language-mnist  
-**Task Type:** Image Classification  
-**Image Type:** Grayscale hand gesture images  
-**Image Size:** 28 × 28 pixels  
-**Format:** CSV files  
+**Dataset Link:** https://www.kaggle.com/datasets/grassknoted/asl-alphabet  
+**Author:** grassknoted  
 
 ---
 
-## Dataset Description
+# 🖼 Dataset Description
 
 The dataset contains images of hand gestures representing letters from the American Sign Language alphabet.
 
-Each image is stored as pixel values in CSV format.  
-Every row represents one image.
-
-Each image has:
-
-- 784 pixel values;
-- 1 label column;
-- 28 × 28 grayscale structure.
-
-The label represents the letter shown by the hand gesture.
-
----
-
-## Files
-
-Usually, the dataset contains two main files:
-
-```text
-sign_mnist_train.csv
-sign_mnist_test.csv
-```
-
-| File | Description |
-|---|---|
-| sign_mnist_train.csv | Training dataset |
-| sign_mnist_test.csv | Testing dataset |
-
----
-
-## Data Structure
-
-Each row contains:
-
-| Column | Description |
-|---|---|
-| label | Class label of the hand gesture |
-| pixel1 - pixel784 | Pixel values of the 28×28 image |
+Each folder represents one class.
 
 Example:
 
 ```text
-label, pixel1, pixel2, pixel3, ..., pixel784
+A/
+B/
+C/
+...
+Z/
+del/
+nothing/
+space/
 ```
+
+Each image belongs to one specific gesture class.
+
+The dataset is used for a **multi-class image classification** problem.
 
 ---
 
-## Image Information
+# 📊 Dataset Features
 
-| Feature | Value |
+| Feature | Description |
 |---|---|
-| Image size | 28 × 28 |
-| Color mode | Grayscale |
-| Pixel range | 0–255 |
-| Input shape for CNN | 28 × 28 × 1 |
+| Task Type | Image Classification |
+| Data Type | Hand Gesture Images |
+| Color Mode | RGB |
+| Classes | 29 |
+| Input | Image |
+| Output | Predicted ASL Letter |
 
 ---
 
-## Project Task
+# 🏗 Planned Deep Learning Workflow
 
-The model receives a hand gesture image as input and predicts the corresponding sign language class.
-
-Input:
+The project workflow will follow these stages:
 
 ```text
-Hand gesture image
-```
-
-Output:
-
-```text
-Predicted sign language letter
-```
-
----
-
-## Why This Dataset Was Chosen
-
-I chose this dataset because:
-
-- it is suitable for deep learning;
-- it is not too heavy for Google Colab or a laptop;
-- it is good for CNN models;
-- it has social importance;
-- it can be used to build a simple digital assistant;
-- it supports image preprocessing and augmentation;
-- it is suitable for a Streamlit demo application.
-
----
-
-## Planned Workflow
-
-The project workflow:
-
-```text
-Dataset loading
-      ↓
+Dataset Collection
+        ↓
 Exploratory Data Analysis
-      ↓
-Image preprocessing
-      ↓
-Data augmentation
-      ↓
-CNN model training
-      ↓
-Model evaluation
-      ↓
-Streamlit app demo
+        ↓
+Image Preprocessing
+        ↓
+Data Augmentation
+        ↓
+CNN Model Training
+        ↓
+Model Evaluation
+        ↓
+Error Analysis
+        ↓
+Streamlit Application
 ```
 
 ---
 
-## Directory Structure
+# 📅 Weekly Plan
+
+| Week | Planned Work |
+|---|---|
+| Week 1 | Dataset exploration and image analysis |
+| Week 2 | Preprocessing and data augmentation |
+| Week 3 | CNN model training and evaluation |
+| Week 4 | Streamlit app and final testing |
+
+---
+
+# 🧪 Planned Techniques
+
+The project will include:
+
+## Preprocessing
+- resizing images;
+- normalization;
+- train-validation split.
+
+## Data Augmentation
+- rotation;
+- zoom;
+- shifting;
+- brightness adjustment.
+
+## Deep Learning
+- Convolutional Neural Network (CNN);
+- image classification.
+
+## Evaluation
+- accuracy;
+- confusion matrix;
+- prediction analysis.
+
+---
+
+# 💻 Streamlit Application
+
+The final project will include a simple Streamlit application.
+
+The user will be able to:
+
+1. Upload a hand gesture image.
+2. Run prediction.
+3. See the predicted sign language letter.
+4. View prediction confidence.
+
+Example:
 
 ```text
-data/
-├── README.md
-├── sign_mnist_train.csv
-└── sign_mnist_test.csv
+Predicted Letter: A
+Confidence: 97%
 ```
 
+---
+
+# 📁 Expected Project Structure
+
+```text
+sign-language-recognition/
+│
+├── data/
+├── notebooks/
+├── reports/
+├── models/
+├── results/
+├── src/
+├── app.py
+├── requirements.txt
+├── README.md
+└── project-proposal.md
+```
 
 ---
 
-## Next Steps
+# 🚀 Expected Outcome
 
-After downloading the dataset:
+At the end of the project, I expect to have:
 
-1. Load train and test CSV files.
-2. Check class distribution.
-3. Visualize sample hand gesture images.
-4. Normalize pixel values.
-5. Reshape images for CNN.
-6. Apply data augmentation.
-7. Train CNN model.
-8. Evaluate model performance.
-9. Build Streamlit demo app.
+- a trained CNN model;
+- an evaluated image classification system;
+- visualized results;
+- a working Streamlit demo application;
+- a complete GitHub project structure.
 
 ---
+
 
