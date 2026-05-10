@@ -1,0 +1,21 @@
+# Sign Language Alphabet Recognition - Requirements
+
+# Core Data Science
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Deep Learning
+tensorflow>=2.15.0
+
+# Image Processing
+pillow>=10.0.0
+opencv-python>=4.8.0
+scikit-image>=0.21.0
+
+# Machine Learning & Visualization
+scikit-learn>=1.3.0
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# Deployment
+streamlit>=1.30.0
