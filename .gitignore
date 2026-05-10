@@ -1,0 +1,29 @@
+# =========================
+# Dataset Files 
+# =========================
+data/asl_alphabet_train/
+data/asl_alphabet_test/
+data/*.zip
+data/*.csv
+
+# =========================
+# Model Files 
+# =========================
+# models/*.h5 (Егер файл тым үлкен болса, алдына # алып таста)
+
+# =========================
+# Python & System Junk
+# =========================
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+
+# =========================
+# Environment & Tools
+# =========================
+venv/
+env/
+.vscode/
+.streamlit/
