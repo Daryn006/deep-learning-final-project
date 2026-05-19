@@ -1,12 +1,9 @@
 import streamlit as st
 import numpy as np
 from PIL import Image
-import tensorflow as tf
-from src.predict import (
-    load_asl_model,
-    preprocess_image,
-    predict_sign
-)
+
+from src.predict import load_asl_model, predict_asl_sign
+
 
 # ---------------- PAGE CONFIG ----------------
 
@@ -15,6 +12,7 @@ st.set_page_config(
     page_icon="✋",
     layout="wide"
 )
+
 
 # ---------------- CUSTOM CSS ----------------
 
@@ -75,6 +73,17 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+
+# ---------------- CLASS NAMES ----------------
+
+class_names = [
+    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+    "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
+    "U", "V", "W", "X", "Y", "Z",
+    "del", "nothing", "space"
+]
+
+
 # ---------------- TITLE ----------------
 
 st.markdown(
@@ -86,6 +95,7 @@ st.markdown(
     '<div class="subtitle">Deep Learning CNN system for recognizing American Sign Language gestures</div>',
     unsafe_allow_html=True
 )
+
 
 # ---------------- METRICS ----------------
 
@@ -117,17 +127,21 @@ with col3:
 
 st.write("")
 
+
 # ---------------- LOAD MODEL ----------------
 
 @st.cache_resource
 def get_model():
     return load_asl_model()
 
+
 model = get_model()
+
 
 # ---------------- MAIN CONTENT ----------------
 
 left, right = st.columns([1.1, 1])
+
 
 # ---------------- LEFT SIDE ----------------
 
@@ -146,7 +160,7 @@ with left:
 
     if uploaded_file is not None:
 
-        image = Image.open(uploaded_file)
+        image = Image.open(uploaded_file).convert("RGB")
 
         st.image(
             image,
@@ -156,7 +170,7 @@ with left:
 
         with st.spinner("Analyzing gesture..."):
 
-            predicted_class, confidence, probs = predict_sign(
+            predicted_class, confidence, top_3 = predict_asl_sign(
                 model,
                 image
             )
@@ -174,22 +188,14 @@ with left:
 
         st.subheader("📊 Top Predictions")
 
-        top_indices = np.argsort(probs)[::-1][:5]
-
-        class_names = [
-            "A","B","C","D","E","F","G","H","I","J",
-            "K","L","M","N","O","P","Q","R","S","T",
-            "U","V","W","X","Y","Z",
-            "del","nothing","space"
-        ]
-
-        for idx in top_indices:
-            st.progress(float(probs[idx]))
+        for item in top_3:
+            st.progress(item["confidence"] / 100)
             st.write(
-                f"{class_names[idx]} — {probs[idx]*100:.2f}%"
+                f"**{item['class']}** — {item['confidence']:.2f}%"
             )
 
     st.markdown('</div>', unsafe_allow_html=True)
+
 
 # ---------------- RIGHT SIDE ----------------
 
@@ -231,6 +237,7 @@ who use sign language.
 """)
 
     st.markdown('</div>', unsafe_allow_html=True)
+
 
 # ---------------- FOOTER ----------------
 
