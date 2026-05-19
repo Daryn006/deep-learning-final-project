@@ -1,189 +1,241 @@
 import streamlit as st
+import numpy as np
 from PIL import Image
+import tensorflow as tf
+from src.predict import (
+    load_asl_model,
+    preprocess_image,
+    predict_sign
+)
 
-from src.predict import load_asl_model, predict_asl_sign
-
+# ---------------- PAGE CONFIG ----------------
 
 st.set_page_config(
-    page_title="ASL Sign Language Recognition",
+    page_title="ASL Recognition",
     page_icon="✋",
     layout="wide"
 )
 
+# ---------------- CUSTOM CSS ----------------
+
+st.markdown("""
+<style>
+
+.main {
+    background-color: #f5f7fb;
+}
+
+.title {
+    text-align: center;
+    font-size: 60px;
+    font-weight: 800;
+    color: #111827;
+    margin-top: 20px;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 22px;
+    color: #4b5563;
+    margin-bottom: 40px;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+.metric-card {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: white;
+    padding: 25px;
+    border-radius: 18px;
+    text-align: center;
+}
+
+.result-box {
+    background: linear-gradient(135deg, #10b981, #059669);
+    padding: 30px;
+    border-radius: 20px;
+    color: white;
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.footer {
+    text-align: center;
+    color: gray;
+    margin-top: 50px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# ---------------- TITLE ----------------
 
 st.markdown(
-    """
-    <style>
-    .main {
-        background-color: #f8fafc;
-    }
-
-    .title {
-        font-size: 46px;
-        font-weight: 800;
-        color: #111827;
-        text-align: center;
-        margin-bottom: 10px;
-    }
-
-    .subtitle {
-        font-size: 18px;
-        color: #4b5563;
-        text-align: center;
-        margin-bottom: 35px;
-    }
-
-    .card {
-        background-color: white;
-        padding: 25px;
-        border-radius: 18px;
-        box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-        margin-bottom: 20px;
-    }
-
-    .result-box {
-        background: linear-gradient(135deg, #2563eb, #7c3aed);
-        color: white;
-        padding: 30px;
-        border-radius: 18px;
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    .predicted-letter {
-        font-size: 64px;
-        font-weight: 900;
-        margin: 10px 0;
-    }
-
-    .confidence {
-        font-size: 22px;
-        font-weight: 600;
-    }
-
-    .small-text {
-        color: #6b7280;
-        font-size: 15px;
-    }
-    </style>
-    """,
+    '<div class="title">✋ Sign Language Recognition</div>',
     unsafe_allow_html=True
 )
 
+st.markdown(
+    '<div class="subtitle">Deep Learning CNN system for recognizing American Sign Language gestures</div>',
+    unsafe_allow_html=True
+)
+
+# ---------------- METRICS ----------------
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown("""
+    <div class="metric-card">
+        <h2>29</h2>
+        <p>Classes</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col2:
+    st.markdown("""
+    <div class="metric-card">
+        <h2>CNN</h2>
+        <p>Model Type</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col3:
+    st.markdown("""
+    <div class="metric-card">
+        <h2>AI</h2>
+        <p>Computer Vision</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+st.write("")
+
+# ---------------- LOAD MODEL ----------------
 
 @st.cache_resource
 def get_model():
     return load_asl_model()
 
-
 model = get_model()
 
+# ---------------- MAIN CONTENT ----------------
 
-st.markdown(
-    "<div class='title'>✋ Sign Language Recognition</div>",
-    unsafe_allow_html=True
-)
+left, right = st.columns([1.1, 1])
 
-st.markdown(
-    "<div class='subtitle'>AI system for recognizing American Sign Language hand gestures using CNN deep learning model</div>",
-    unsafe_allow_html=True
-)
+# ---------------- LEFT SIDE ----------------
 
+with left:
 
-left_col, right_col = st.columns([1, 1])
+    st.markdown('<div class="card">', unsafe_allow_html=True)
 
-
-with left_col:
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
-
-    st.subheader("📤 Upload Image")
-
-    st.write(
-        "Upload a hand gesture image. The system will analyze it and predict the ASL letter."
-    )
+    st.subheader("📤 Upload Hand Gesture Image")
 
     uploaded_file = st.file_uploader(
-        "Choose an image",
+        "Choose image",
         type=["jpg", "jpeg", "png"]
     )
 
-    st.markdown(
-        """
-        <p class='small-text'>
-        Supported formats: JPG, JPEG, PNG<br>
-        Recommended: clear image with one hand gesture
-        </p>
-        """,
-        unsafe_allow_html=True
-    )
+    st.caption("Supported formats: JPG, JPEG, PNG")
 
-    st.markdown("</div>", unsafe_allow_html=True)
+    if uploaded_file is not None:
 
+        image = Image.open(uploaded_file)
 
-with right_col:
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
-
-    st.subheader("ℹ️ About Project")
-
-    st.write(
-        """
-        This project uses a Convolutional Neural Network to classify ASL alphabet gestures.
-        The model was trained on the ASL Alphabet dataset from Kaggle.
-        """
-    )
-
-    st.write("**Classes:** 29")
-    st.write("**Task:** Multi-class image classification")
-    st.write("**Model:** CNN")
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-
-if uploaded_file is not None:
-    image = Image.open(uploaded_file).convert("RGB")
-
-    st.markdown("---")
-
-    image_col, result_col = st.columns([1, 1])
-
-    with image_col:
-        st.subheader("🖼 Uploaded Image")
-        st.image(image, use_container_width=True)
-
-    with result_col:
-        st.subheader("🤖 Prediction Result")
-
-        predicted_class, confidence, top_3 = predict_asl_sign(model, image)
-
-        st.markdown(
-            f"""
-            <div class='result-box'>
-                <div>Predicted ASL Sign</div>
-                <div class='predicted-letter'>{predicted_class}</div>
-                <div class='confidence'>Confidence: {confidence:.2f}%</div>
-            </div>
-            """,
-            unsafe_allow_html=True
+        st.image(
+            image,
+            caption="Uploaded Image",
+            use_container_width=True
         )
 
-        st.markdown("### Top 3 Predictions")
+        with st.spinner("Analyzing gesture..."):
 
-        for item in top_3:
-            st.write(f"**{item['class']}** — {item['confidence']:.2f}%")
-            st.progress(item["confidence"] / 100)
+            predicted_class, confidence, probs = predict_sign(
+                model,
+                image
+            )
 
+        st.write("")
 
-st.markdown("---")
+        st.markdown(f"""
+        <div class="result-box">
+            Prediction: {predicted_class}<br>
+            Confidence: {confidence:.2f}%
+        </div>
+        """, unsafe_allow_html=True)
 
-st.markdown(
-    """
-    ### 🎯 Project Purpose
+        st.write("")
 
-    This application demonstrates how deep learning can be used for accessibility technologies.
-    It can recognize American Sign Language hand gestures from images and return the predicted letter.
+        st.subheader("📊 Top Predictions")
 
-    ### 🧠 Technologies Used
+        top_indices = np.argsort(probs)[::-1][:5]
 
-    Python · TensorFlow · Keras · CNN · Streamlit · Computer Vision
-    """
-)
+        class_names = [
+            "A","B","C","D","E","F","G","H","I","J",
+            "K","L","M","N","O","P","Q","R","S","T",
+            "U","V","W","X","Y","Z",
+            "del","nothing","space"
+        ]
+
+        for idx in top_indices:
+            st.progress(float(probs[idx]))
+            st.write(
+                f"{class_names[idx]} — {probs[idx]*100:.2f}%"
+            )
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ---------------- RIGHT SIDE ----------------
+
+with right:
+
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+
+    st.subheader("📘 About Project")
+
+    st.write("""
+This project uses a Convolutional Neural Network (CNN)
+to recognize American Sign Language hand gestures.
+
+The model was trained on the ASL Alphabet dataset
+from Kaggle using TensorFlow and Keras.
+
+The system can classify 29 gesture classes,
+including alphabet letters and special symbols.
+""")
+
+    st.subheader("🧠 Technologies")
+
+    st.write("""
+- Python
+- TensorFlow / Keras
+- Streamlit
+- Computer Vision
+- Deep Learning
+- CNN Architecture
+""")
+
+    st.subheader("🎯 Project Goal")
+
+    st.write("""
+The purpose of this project is to demonstrate
+how artificial intelligence can improve accessibility
+and communication technologies for people
+who use sign language.
+""")
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ---------------- FOOTER ----------------
+
+st.markdown("""
+<div class="footer">
+Final Deep Learning Project • ASL Recognition System
+</div>
+""", unsafe_allow_html=True)
